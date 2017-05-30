@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 // import { isLoaded as isInfoLoaded, load as loadInfo } from 'redux/modules/info';
 // import { isLoaded as isAuthLoaded, load as loadAuth, logout } from 'redux/modules/auth';
-import { InfoBar, Header } from 'components';
+import { Header } from 'components';
 // import { push } from 'react-router-redux';
 import config from '../../config';
 // import { asyncConnect } from 'redux-async-connect';
@@ -64,7 +64,6 @@ export default class App extends Component {
         <div className={styles.appContent}>
           {this.props.children}
         </div>
-        <InfoBar/>
 
         <div className="well text-center">
           Have questions? Ask for help Discord channel.
