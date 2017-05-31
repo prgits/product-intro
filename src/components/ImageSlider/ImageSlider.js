@@ -4,6 +4,7 @@ const Carousel = require('react-responsive-carousel').Carousel;
 export default class ImageSlider extends Component {
   render() {
     const { items } = this.props;
+    require('react-responsive-carousel/lib/styles/carousel.css');
 
     return (
       <Carousel
