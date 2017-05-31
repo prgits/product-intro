@@ -127,7 +127,7 @@ export default class Header extends Component {
             <Navbar.Header>
               <Navbar.Toggle className={styles.navbarToggle} onClick={this.handleHamburgerClick}/>
               <Navbar.Brand className={styles.brand}>
-                <IndexLink to="/" activeStyle={{color: '#33e0ff'}}>
+                <IndexLink to="/">
                   <img src={logoImage} alt={config.app.title} />
                 </IndexLink>
               </Navbar.Brand>
@@ -140,6 +140,11 @@ export default class Header extends Component {
             className={this.state.navVisible ? (styles.mainNav + ' ' + styles.speedIn) : (styles.mainNav)}
             eventKey={0}>
               <Nav navbar>
+                <LinkContainer to="/">
+                  <NavItem eventKey={1} onClick={() => this.handleLinkClick('/')}>
+                    Home
+                  </NavItem>
+                </LinkContainer>
                 <LinkContainer to="/widgets">
                   <NavItem eventKey={2} onClick={() => this.handleLinkClick('/widgets')}>Widgets</NavItem>
                 </LinkContainer>

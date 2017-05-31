@@ -10,3 +10,4 @@ export GithubButton from './GithubButton/GithubButton';
 export SurveyForm from './SurveyForm/SurveyForm';
 export WidgetForm from './WidgetForm/WidgetForm';
 export Header from './Header/Header';
+export ImageSlider from './ImageSlider/ImageSlider';

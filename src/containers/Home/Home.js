@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import { CounterButton } from 'components';
+import { CounterButton, ImageSlider } from 'components';
 import config from '../../config';
 import Helmet from 'react-helmet';
 
@@ -14,6 +14,14 @@ export default class Home extends Component {
         <Helmet title="Home"/>
         <div className={styles.masthead}>
           <div className="container">
+            <ImageSlider items={[
+              {src: 'slide1.jpeg', label: 'label1'},
+              {src: 'slide2.jpeg', label: 'label2'},
+              {src: 'slide3.jpeg', label: 'label3'},
+              {src: 'slide4.jpeg', label: 'label4'},
+              {src: 'slide5.jpeg', label: 'label5'},
+              {src: 'slide6.jpeg', label: 'label6'},
+            ]}/>
             <div className={styles.logo}>
               <p>
                 <img src={logoImage}/>
