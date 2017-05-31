@@ -1,12 +1,44 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { IndexLink } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
+import { isLoaded as isInfoLoaded, load as loadInfo } from 'redux/modules/info';
+import { isLoaded as isAuthLoaded, load as loadAuth, logout } from 'redux/modules/auth';
+import { push } from 'react-router-redux';
 import config from '../../config';
+import { asyncConnect } from 'redux-async-connect';
 
+@asyncConnect([{
+  promise: ({store: {dispatch, getState}}) => {
+    const promises = [];
+
+    if (!isInfoLoaded(getState())) {
+      promises.push(dispatch(loadInfo()));
+    }
+    if (!isAuthLoaded(getState())) {
+      promises.push(dispatch(loadAuth()));
+    }
+
+    return Promise.all(promises);
+  }
+}])
+@connect(
+  state => ({user: state.auth.user}),
+  {logout, pushState: push})
 export default class Header extends Component {
+  static propTypes = {
+    user: PropTypes.object,
+    logout: PropTypes.func.isRequired,
+    pushState: PropTypes.func.isRequired
+  };
+
+  static contextTypes = {
+    store: PropTypes.object.isRequired
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -21,6 +53,21 @@ export default class Header extends Component {
     this.handleShadowClick = this.handleShadowClick.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.user && nextProps.user) {
+      // login
+      this.props.pushState('/loginSuccess');
+    } else if (this.props.user && !nextProps.user) {
+      // logout
+      this.props.pushState('/');
+    }
+  }
+
+  handleLogout = (event) => {
+    event.preventDefault();
+    this.props.logout();
+  };
+
   handleHamburgerClick = (event) => {
     event.preventDefault();
     this.setState( { shadowShow: !this.state.navVisible }, () => {
@@ -32,7 +79,7 @@ export default class Header extends Component {
     } );
     this.setState( { navVisible: !this.state.navVisible } );
     this.setState( { cartShow: false } );
-  }
+  };
 
   handleCartClick = (event) => {
     event.preventDefault();
@@ -45,7 +92,7 @@ export default class Header extends Component {
     } );
     this.setState( { cartShow: !this.state.cartShow } );
     this.setState( { navVisible: false } );
-  }
+  };
 
   handleShadowClick = (event) => {
     event.preventDefault();
@@ -55,9 +102,10 @@ export default class Header extends Component {
       cartShow: false
     });
     document.body.style.overflow = 'auto';
-  }
+  };
 
   render() {
+    const {user} = this.props;
     const styles = require('./Header.scss');
     const logoImage = require('./img/cd-logo.svg');
 
@@ -87,12 +135,19 @@ export default class Header extends Component {
                 <LinkContainer to="/survey">
                   <NavItem eventKey={3}>Survey</NavItem>
                 </LinkContainer>
-                <LinkContainer to="/pagination">
-                  <NavItem eventKey={4}>Pagination</NavItem>
-                </LinkContainer>
                 <LinkContainer to="/about">
-                  <NavItem eventKey={5}>About Us</NavItem>
+                  <NavItem eventKey={4}>About Us</NavItem>
                 </LinkContainer>
+                {!user &&
+                <LinkContainer to="/login">
+                  <NavItem eventKey={5}>Login</NavItem>
+                </LinkContainer>}
+                {user &&
+                <LinkContainer to="/logout">
+                  <NavItem eventKey={6} className="logout-link" onClick={this.handleLogout}>
+                    Logout
+                  </NavItem>
+                </LinkContainer>}
               </Nav>
             </Navbar.Collapse>
 
@@ -133,3 +188,4 @@ export default class Header extends Component {
     );
   }
 }
+
