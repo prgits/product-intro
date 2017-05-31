@@ -51,6 +51,7 @@ export default class Header extends Component {
     this.handleCartClick = this.handleCartClick.bind(this);
     this.handleHamburgerClick = this.handleHamburgerClick.bind(this);
     this.handleShadowClick = this.handleShadowClick.bind(this);
+    this.handleLinkClick = this.handleLinkClick.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -104,6 +105,16 @@ export default class Header extends Component {
     document.body.style.overflow = 'auto';
   };
 
+  handleLinkClick = (path) => {
+    this.props.pushState(path);
+    this.setState({
+      shadowShow: false,
+      navVisible: false,
+      cartShow: false
+    });
+    document.body.style.overflow = 'auto';
+  };
+
   render() {
     const {user} = this.props;
     const styles = require('./Header.scss');
@@ -130,17 +141,17 @@ export default class Header extends Component {
             eventKey={0}>
               <Nav navbar>
                 <LinkContainer to="/widgets">
-                  <NavItem eventKey={2}>Widgets</NavItem>
+                  <NavItem eventKey={2} onClick={() => this.handleLinkClick('/widgets')}>Widgets</NavItem>
                 </LinkContainer>
                 <LinkContainer to="/survey">
-                  <NavItem eventKey={3}>Survey</NavItem>
+                  <NavItem eventKey={3} onClick={() => this.handleLinkClick('/survey')}>Survey</NavItem>
                 </LinkContainer>
                 <LinkContainer to="/about">
-                  <NavItem eventKey={4}>About Us</NavItem>
+                  <NavItem eventKey={4} onClick={() => this.handleLinkClick('/about')}>About Us</NavItem>
                 </LinkContainer>
                 {!user &&
                 <LinkContainer to="/login">
-                  <NavItem eventKey={5}>Login</NavItem>
+                  <NavItem eventKey={5} onClick={() => this.handleLinkClick('/login')}>Login</NavItem>
                 </LinkContainer>}
                 {user &&
                 <LinkContainer to="/logout">

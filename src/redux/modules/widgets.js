@@ -87,6 +87,7 @@ export function isLoaded(globalState) {
 }
 
 export function load() {
+  console.log(1);
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
     promise: (client) => client.get('/widget/load/param1/param2') // params not used, just shown as demonstration
